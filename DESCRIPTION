@@ -18,6 +18,7 @@ Imports:
     ggplot2 (>= 3.4.2),
     ggspatial,
     grDevices,
+    gridExtra,
     leaflet,
     leaflet.extras,
     methods,
