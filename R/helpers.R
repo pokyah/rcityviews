@@ -77,6 +77,7 @@
   }
 }
 
+
 .themeOptions <- function(theme) {
   colors <- switch(theme,
                    "vintage" = list(
@@ -191,7 +192,7 @@
                      "waterlines" = "#a3bff4",
                      "textshadow" = "#e282af"
                    ),
-                   # Prettymaps themes
+                    # Prettymaps themes
                    "default" = list(
                      "background" = "#F4F4F4",
                      "water" = "#9ED0E6",
@@ -269,29 +270,6 @@
                      "text" = "#494949",
                      "waterlines" = "#ACC8DA"
                    ),
-                   # custom themes
-                   "lunar_shadow" = list(
-                     "background" = "#0D0D0D",
-                     "water" = "#2B1A3A",
-                     "landuse" = "#2D2D2D",
-                     "contours" = "#4C4C4C",
-                     "streets" = "#333333",
-                     "rails" = c("#4C4C4C", "#2D2D2D"),
-                     "buildings" = c("#202020", "#3A3A3A", "#525252"),
-                     "text" = "#FFFFFF",
-                     "waterlines" = "#613D7C"
-                   ),
-                   "urban_glow" = list(
-                     "background" = "#343b47",  # Black background
-                     "water" = "#ebad1b",       # Dark grey for water
-                     "landuse" = "#343b47",     # Very dark grey for land use
-                     "contours" = "#343b47",    # Dark grey for contours
-                     "streets" = "#666d76",     # Light grey for streets
-                     "rails" = c("#343b47", "#666d76"),  # Medium greys for rails
-                     "buildings" = "#343b47",   # Yellow for buildings
-                     "text" = "#FFFFFF",        # White text for contrast
-                     "waterlines" = "#ebad1b"   # Dark grey for waterlines
-                   )
   )
   font <- switch(theme,
                  "vintage" = list(
@@ -346,12 +324,12 @@
                  ),
                  # Fonts for prettymaps themes
                  "default" = list(
-                   "family" = "Lato Regular",
+                   "family" = "Ubuntu Mono",
                    "face" = "plain",
                    "scale" = 1
                  ),
                  "macao" = list(
-                   "family" = "Georgia",
+                   "family" = "Ubuntu Mono",
                    "face" = "plain",
                    "scale" = 1
                  ),
@@ -361,76 +339,43 @@
                    "scale" = 1
                  ),
                  "tijuca" = list(
-                   "family" = "LibreBaskerville",
+                   "family" = "Libre Baskerville",
                    "face" = "plain",
                    "scale" = 1
                  ),
                  "oslo" = list(
-                   "family" = "LibreBaskerville",
+                   "family" = "Libre Baskerville",
                    "face" = "plain",
                    "scale" = 1
                  ),
                  "tokyo" = list(
-                   "family" = "Meiryo",
+                   "family" = "Ubuntu Mono",
                    "face" = "plain",
                    "scale" = 1
                  ),
                  "paris" = list(
-                   "family" = "Garamond",
-                   "face" = "plain",
-                   "scale" = 1
-                 ),
-                 "lunar_shadow" = list(
-                   "family" = "Caveat",
-                   "face" = "plain",
-                   "scale" = 1
-                 ),
-                 "urban_glow" = list(
-                   "family" = "Caveat",
+                   "family" = "Ubuntu Mono",
                    "face" = "plain",
                    "scale" = 1
                  )
   )
-  size <- switch(
-    theme,
-    "urban_glow" = list(
-      borders = list(
-        "contours" = 0.12,
-        "water" = 0.3,
-        "canal" = 0.4,
-        "river" = 0.5
-      ),
-      streets = list(
-        "path" = 0.4,
-        "residential" = 0.4,
-        "structure" = 0.4,
-        "tertiary" = 0.4,
-        "secondary" = 0.4,
-        "primary" = 0.7,
-        "motorway" = 0.7,
-        "rails" = 0.6,
-        "runway" = 2.5
-      )
-    ),
-    list(
-      borders = list(
-        "contours" = 0.2,
-        "water" = 0.5,
-        "canal" = 0.6,
-        "river" = 0.7
-      ),
-      streets = list(
-        "path" = 0.25,
-        "residential" = 0.35,
-        "structure" = 0.4,
-        "tertiary" = 0.45,
-        "secondary" = 0.5,
-        "primary" = 0.6,
-        "motorway" = 0.85,
-        "rails" = 0.75,
-        "runway" = 3
-      )
-    )
+  size <- list()
+  size[["borders"]] <- list(
+    "contours" = 0.15,
+    "water" = 0.4,
+    "canal" = 0.5,
+    "river" = 0.6
+  )
+  size[["streets"]] <- list(
+    "path" = 0.2,
+    "residential" = 0.3,
+    "structure" = 0.35,
+    "tertiary" = 0.4,
+    "secondary" = 0.5,
+    "primary" = 0.6,
+    "motorway" = 0.8,
+    "rails" = 0.65,
+    "runway" = 3
   )
   themeOptions <- list(
     "colors" = colors,
@@ -439,4 +384,5 @@
   )
   return(themeOptions)
 }
+
 
