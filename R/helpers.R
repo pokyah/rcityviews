@@ -344,17 +344,32 @@
                      "text" = "#4b4b4b",
                      "waterlines" = "#cedce9"
                    ),
-                   # "dark" = list(
-                   #   "background" = "#006769",
-                   #   "water" = "#006769",
-                   #   "landuse" = c("#40A578", "#9DDE8B", "#E6FF94"),
-                   #   "contours" = "#006769",
-                   #   "streets" = "#9DDE8B",
-                   #   "rails" = c("#9DDE8B", "#0A1931"),
-                   #   "buildings" = c("#E6FF94", "#E6FF94", "#E6FF94"),
-                   #   "text" = "#9DDE8B",
-                   #   "waterlines" = "#006769"
-                   # )
+                   "greeny" = list(
+                     "background" = "#006769",
+                     "water" = "#006769",
+                     "landuse" = c("#40A578", "#9DDE8B", "#E6FF94"),
+                     "contours" = "#006769",
+                     "streets" = "#9DDE8B",
+                     "rails" = c("#9DDE8B", "#0A1931"),
+                     "buildings" = c("#E6FF94", "#E6FF94", "#E6FF94"),
+                     "text" = "#9DDE8B",
+                     "waterlines" = "#006769"
+                   ),
+                   "church" = list(
+                     "background" = "#FFD700",    # Bright gold, reminiscent of sunlight through glass
+                     "water" = "#1F75FE",         # Vivid blue for strong water reflections
+                     "landuse" = c("#E32636",     # Crimson red for dramatic contrasts
+                                   "#228B22",     # Forest green for lush land areas
+                                   "#FF4500"),    # Orange red for a striking variation
+                     "contours" = "#A020F0",      # Deep purple for distinct contours
+                     "streets" = "#FFFFFF",       # Keeping streets white for contrast against bright background
+                     "rails" = c("#8A2BE2", "#9932CC"),  # Two shades of deep violet for rail elements
+                     "buildings" = c("#FF6347",   # Tomato red for a vivid building color
+                                     "#FF69B4",   # Hot pink for bold accents
+                                     "#FFA500"),  # Orange for additional vibrancy in structures
+                     "text" = "#000000",          # Black text for strong readability over vivid colors
+                     "waterlines" = "#00CED1"     # Bright turquoise for waterline details
+                   )
   )
   font <- switch(theme,
                  "vintage" = list(
@@ -452,7 +467,18 @@
                   "family" = "Ubuntu Mono",
                   "face" = "plain",
                   "scale" = 1
+                ),
+                "greeny" = list(
+                  "family" = "Ubuntu Mono",
+                  "face" = "plain",
+                  "scale" = 1
+                ),
+                "church" = list(
+                  "family" = "Ubuntu Mono",
+                  "face" = "plain",
+                  "scale" = 1
                 )
+                
   )
   size <- list()
   size[["borders"]] <- list(

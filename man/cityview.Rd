@@ -9,7 +9,7 @@ cityview(
   zoom = 1,
   theme = c(
     "vintage", "modern", "bright", "delftware", "comic",
-    "rouge", "original", "midearth", "batik", "vice"
+    "rouge", "original", "midearth", "batik", "vice", "default", "macao", "minimal", "tijuca", "oslo", "tokyo", "paris", "dark", "light"
   ),
   border = c(
     "none", "circle", "rhombus", "square",
@@ -43,7 +43,9 @@ information about the composition of this list). Possible
 pre-specified themes are \code{vintage} (default),
 \code{modern}, \code{bright}, \code{delftware}, \code{comic},
 \code{rouge}, \code{original}, \code{midearth}, \code{batik}
-and \code{vice}.}
+and \code{vice}, \code{default}, \code{macao}, \code{minimal},
+\code{tijuca}, \code{oslo}, \code{tokyo}, \code{paris}, \code{dark}, \code{light},
+\code{greeny}, \code{church},.}
 
 \item{border}{a character specifying the type of border to use. Possible
 options are \code{none} (default), \code{circle},

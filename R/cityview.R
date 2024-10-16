@@ -58,7 +58,8 @@
 #'                 \code{modern}, \code{bright}, \code{delftware}, \code{comic},
 #'                 \code{rouge}, \code{original}, \code{midearth}, \code{batik}
 #'                 and \code{vice}, \code{default}, \code{macao}, \code{minimal},
-#'                 \code{tijuca}, \code{oslo}, \code{tokyo}, \code{paris}, \code{dark}, \code{light}  .
+#'                 \code{tijuca}, \code{oslo}, \code{tokyo}, \code{paris}, \code{dark}, \code{light},
+#'                 \code{greeny}, \code{church},.
 #' @param border   a character specifying the type of border to use. Possible
 #'                 options are \code{none} (default), \code{circle},
 #'                 \code{rhombus}, \code{square}, \code{hexagon} (6 vertices),
@@ -192,7 +193,7 @@ cityview <- function(name = NULL,
                      theme = c(
                        "vintage", "modern", "bright", "delftware", "comic",
                        "rouge", "original", "midearth", "batik", "vice",
-                       "default", "macao", "minimal", "tijuca", "oslo", "tokyo", "paris", "dark", "light"
+                       "default", "macao", "minimal", "tijuca", "oslo", "tokyo", "paris", "dark", "light", "greeny", "church"
                      ),
                      border = c(
                        "none", "circle", "rhombus", "square",
