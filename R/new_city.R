@@ -26,6 +26,9 @@
 #' @param country A single string to be used as the country.
 #' @param lat     A single numeric value to be used as the latitude.
 #' @param long    A single numeric value to be used as the longitude.
+#' @param method A character string specifying the geocoding method to use. Defaults to "osm" (OpenStreetMap). Supported methods include:
+#'   \code{"osm"}, \code{"census"}, \code{"arcgis"}, \code{"census_simple"}, \code{"geocodio"}, \code{"mapbox"},
+#'   \code{"google"}, \code{"bing"}, \code{"here"}, \code{"tomtom"}, \code{"nominatim"}, and \code{"tiger"}. Visit \url{https://jessecambon.github.io/tidygeocoder/reference/geo.html} for more details
 #'
 #' @return a data frame containing the new city alongside its respective
 #'   country and coordinates.
@@ -48,9 +51,16 @@
 #' }
 #' @export
 
-new_city <- function(name = NULL, country = NULL, lat = NULL, long = NULL) {
-  stopifnot("specify all input arguments" = all(c(!is.null(name), !is.null(country), !is.null(lat), !is.null(long))))
-  stopifnot("all input must be of length 1" = all(c(length(name) == 1, length(country) == 1, length(lat) == 1, length(long) == 1)))
+new_city <- function(name = NULL, country = NULL, lat = NULL, long = NULL, method = "osm") {
+  # Use match.arg to validate the method parameter
+  method <- match.arg(method, choices = c("osm", "census", "arcgis", "census_simple", "geocodio",
+                                          "mapbox", "google", "bing", "here", "tomtom", "nominatim", "tiger"))
+  stopifnot("At least provide a location name and country" = all(c(length(name) == 1, length(country) == 1)))
+  if(is.null(lat) || is.null(long)){
+    out = .geocode(name, country)
+    lat = out$lat
+    long = out$long
+  }
   stopifnot("'lat' must be >= -90 and <= 90" = lat >= -90 && lat <= 90)
   stopifnot("'long' must be >= -180 and <= 180" = long >= -180 && long <= 180)
   message(paste0("Discovered the city of ", name, ", ", country, " at ", lat, "\u00B0 / ", long, "\u00B0!"))
