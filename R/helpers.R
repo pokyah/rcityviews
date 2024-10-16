@@ -270,6 +270,51 @@
                      "text" = "#494949",
                      "waterlines" = "#ACC8DA"
                    ),
+                   # mythemes
+                   # "dark" = list(
+                   #   "background" = "#522258",
+                   #   "water" = "#D95F59",
+                   #   "landuse" = c("#522258", "#522258", "#522258"),
+                   #   "contours" = "#522258",
+                   #   "streets" = "#8C3061",
+                   #   "rails" = c("#8C3061", "#522258"),
+                   #   "buildings" = c("#522258", "#522258", "#522258"),
+                   #   "text" = "#D95F59",
+                   #   "waterlines" = "#D95F59"
+                   # ),
+                   "dark" = list(
+                     "background" = "#0A1931",
+                     "water" = "#185ADB",
+                     "landuse" = c("#0A1931", "#0A1931", "#0A1931"),
+                     "contours" = "#FFC947",
+                     "streets" = "#FFC947",
+                     "rails" = c("#FFC947", "#0A1931"),
+                     "buildings" = c("#FEDDBE", "#FEDDBE", "#FEDDBE"),
+                     "text" = "#FFC947",
+                     "waterlines" = "#185ADB"
+                    ),
+                   "light" = list(
+                     "background" = "#ffffff",
+                     "water" = "#cedce9",
+                     "landuse" = c("#ffffff", "#ffffff", "#ffffff"),
+                     "contours" = "#ffffff",
+                     "streets" = "#4b4b4b",
+                     "rails" = c("#4b4b4b", "#ffffff"),
+                     "buildings" = c("#ffffff", "#ffffff", "#ffffff"),
+                     "text" = "#4b4b4b",
+                     "waterlines" = "#cedce9"
+                   ),
+                   # "dark" = list(
+                   #   "background" = "#006769",
+                   #   "water" = "#006769",
+                   #   "landuse" = c("#40A578", "#9DDE8B", "#E6FF94"),
+                   #   "contours" = "#006769",
+                   #   "streets" = "#9DDE8B",
+                   #   "rails" = c("#9DDE8B", "#0A1931"),
+                   #   "buildings" = c("#E6FF94", "#E6FF94", "#E6FF94"),
+                   #   "text" = "#9DDE8B",
+                   #   "waterlines" = "#006769"
+                   # )
   )
   font <- switch(theme,
                  "vintage" = list(
@@ -357,7 +402,17 @@
                    "family" = "Ubuntu Mono",
                    "face" = "plain",
                    "scale" = 1
-                 )
+                 ),
+                 "dark" = list(
+                   "family" = "Ubuntu Mono",
+                   "face" = "plain",
+                   "scale" = 1
+                ),
+                "light" = list(
+                  "family" = "Ubuntu Mono",
+                  "face" = "plain",
+                  "scale" = 1
+                )
   )
   size <- list()
   size[["borders"]] <- list(
