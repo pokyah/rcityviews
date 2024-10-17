@@ -356,7 +356,7 @@
                      "waterlines" = "#006769"
                    ),
                    "church" = list(
-                     "background" = "#FFD700",    # Bright gold, reminiscent of sunlight through glass
+                     "background" = "#000000",    # Bright gold, reminiscent of sunlight through glass
                      "water" = "#1F75FE",         # Vivid blue for strong water reflections
                      "landuse" = c("#E32636",     # Crimson red for dramatic contrasts
                                    "#228B22",     # Forest green for lush land areas
@@ -367,7 +367,7 @@
                      "buildings" = c("#FF6347",   # Tomato red for a vivid building color
                                      "#FF69B4",   # Hot pink for bold accents
                                      "#FFA500"),  # Orange for additional vibrancy in structures
-                     "text" = "#000000",          # Black text for strong readability over vivid colors
+                     "text" = "#FFD700",          # Black text for strong readability over vivid colors
                      "waterlines" = "#00CED1"     # Bright turquoise for waterline details
                    )
   )
