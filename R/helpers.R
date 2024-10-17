@@ -13,15 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-.geocode <- function(name, country, method = "osm") {
-  if (missing(name) || !is.character(name)) {
-    stop("Please provide a valid location name as a string.")
-  }
-  
-  # Use match.arg to validate the method parameter
-  method <- match.arg(method, choices = c("osm", "census", "arcgis", "census_simple", "geocodio",
-                                          "mapbox", "google", "bing", "here", "tomtom", "nominatim", "tiger"))
-  
+.geocode <- function(name, country, method) {
+  stopifnot("Please provide a location name as a string" = is.character(name))
+
   # Handle API keys for methods that require them
   methods_with_keys <- c("google", "bing", "here", "tomtom", "mapbox", "geocodio")
   if (method %in% methods_with_keys) {
@@ -31,25 +25,28 @@
       stop(paste0("API key for ", method, " is required. Please set the '", api_key_env, "' environment variable."))
     }
   }
-  
-  result <- tryCatch({
-    geocode_df <- tibble::tibble(address = paste0(name, " ", country)) %>%
-      tidygeocoder::geocode(address, method = method, quiet = TRUE)
-    
-    if (any(is.na(geocode_df$lat)) || any(is.na(geocode_df$long))) {
-      stop("Geocoding failed: Unable to find coordinates for the provided location name.")
+
+  result <- tryCatch(
+    {
+      geocode_df <- tidygeocoder::geocode(
+        data.frame(address = paste0(name, " ", country)), "address",
+        method = method, quiet = TRUE
+      )
+      if (any(is.na(geocode_df$lat)) || any(is.na(geocode_df$long))) {
+        stop("Geocoding failed: Unable to find coordinates for the provided location name.")
+      }
+      city <- data.frame(
+        name = name,
+        country = country,
+        lat = geocode_df$lat[1],
+        long = geocode_df$long[1]
+      )
+    },
+    error = function(e) {
+      stop("Geocoding error: ", e$message)
     }
-    
-    city <- data.frame(
-      name = name,
-      country = country,
-      lat = geocode_df$lat[1],
-      long = geocode_df$long[1]
-    )
-  }, error = function(e) {
-    stop("Geocoding error: ", e$message)
-  })
-  
+  )
+
   return(result)
 }
 
@@ -57,7 +54,9 @@
   if (is.null(name)) {
     city <- .randomCity(NULL)
   } else {
-    if (inherits(name, "data.frame")) {
+    if (inherits(name, "rcityviewsCity")) {
+      city <- name
+    } else if (inherits(name, "data.frame")) {
       stopifnot("input data frame is missing 'name' column" = "name" %in% colnames(name))
       stopifnot("input data frame is missing 'country' column" = "country" %in% colnames(name))
       stopifnot("input data frame is missing 'lat' column" = "lat" %in% colnames(name))
@@ -68,9 +67,10 @@
       indexes <- which(dataset[["name"]] == name)
       index <- .resolveConflicts(name, indexes, dataset)
       if (is.null(index)) {
-        city = .geocode(
-          name = name$name, country = name$country)
-      }else{
+        city <- .geocode(
+          name = name$name, country = name$country
+        )
+      } else {
         city <- dataset[index, ]
       }
       return(city)
@@ -91,7 +91,7 @@
 .resolveConflicts <- function(name, indexes, dataset) {
   index <- indexes
   if (length(indexes) == 0) {
-    stop(paste0("There is no city called '", name, "' in the available data.\n Use new_city function() to geocode the location"))
+    stop(paste0("There is no city called '", name, "' in the available data.\n Use the 'new_city()' function to geocode the location"))
   } else if (length(indexes) > 1) {
     selection <- utils::menu(
       choices = paste0(dataset[indexes, 1], ", ", dataset[indexes, 2], " | Lat: ", round(dataset[indexes, 3], 3), " | Long: ", round(dataset[indexes, 4], 3)),
@@ -506,4 +506,47 @@
   return(themeOptions)
 }
 
+.checkThemeOptions <- function(themeOptions) {
+  # Check for NA's in theme
+  stopifnot("'theme' should not contain NA values" = !any(sapply(themeOptions, anyNA)))
+  # Checks for colors sublist
+  stopifnot("'theme' should contain a list element named 'colors'" = !is.null(themeOptions[["colors"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'background'" = !is.null(themeOptions[["colors"]][["background"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'water'" = !is.null(themeOptions[["colors"]][["water"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'landuse'" = !is.null(themeOptions[["colors"]][["landuse"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'contours'" = !is.null(themeOptions[["colors"]][["contours"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'streets'" = !is.null(themeOptions[["colors"]][["streets"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'rails'" = !is.null(themeOptions[["colors"]][["rails"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'buildings'" = !is.null(themeOptions[["colors"]][["buildings"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'text'" = !is.null(themeOptions[["colors"]][["text"]]))
+  stopifnot("the 'color' list in 'theme' should contain an entry named 'waterlines'" = !is.null(themeOptions[["colors"]][["waterlines"]]))
+  stopifnot("the 'colors' list in 'theme' should contain all valid color representations" = all(sapply(themeOptions[["colors"]], .isColor)))
+  # Checks for font sublist
+  stopifnot("'theme' should contain a list element named 'font'" = !is.null(themeOptions[["font"]]))
+  stopifnot("the 'font' list in 'theme' should contain an entry named 'family'" = !is.null(themeOptions[["font"]][["family"]]))
+  stopifnot("the 'font' list in 'theme' should contain an entry named 'face'" = !is.null(themeOptions[["font"]][["family"]]))
+  stopifnot("the 'font' list in 'theme' should contain an entry named 'scale'" = !is.null(themeOptions[["font"]][["family"]]))
+  stopifnot("the 'font' list in 'theme' should contain an entry named 'append'" = !is.null(themeOptions[["font"]][["family"]]))
+  # Checks for size sublist
+  stopifnot("'theme' should contain a list element named 'size'" = !is.null(themeOptions[["size"]]))
+  # Checks for borders sublist
+  stopifnot("the 'size' list in 'theme' should contain a list named 'borders'" = !is.null(themeOptions[["size"]][["borders"]]))
+  stopifnot("the 'borders' list in the 'size' list in 'theme' should contain an entry named 'contours'" = !is.null(themeOptions[["size"]][["borders"]][["contours"]]))
+  stopifnot("the 'borders' list in the 'size' list in 'theme' should contain an entry named 'water'" = !is.null(themeOptions[["size"]][["borders"]][["water"]]))
+  stopifnot("the 'borders' list in the 'size' list in 'theme' should contain an entry named 'canal'" = !is.null(themeOptions[["size"]][["borders"]][["canal"]]))
+  stopifnot("the 'borders' list in the 'size' list in 'theme' should contain an entry named 'river'" = !is.null(themeOptions[["size"]][["borders"]][["river"]]))
+  stopifnot("the 'borders' list in the 'size' list in 'theme' should contain all numeric values" = all(sapply(themeOptions[["size"]][["borders"]], is.numeric)))
+  # Checks for streets sublist
+  stopifnot("the 'size' list in 'theme' should contain a list named 'streets'" = !is.null(themeOptions[["size"]][["streets"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'path'" = !is.null(themeOptions[["size"]][["streets"]][["path"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'residential'" = !is.null(themeOptions[["size"]][["streets"]][["residential"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'structure'" = !is.null(themeOptions[["size"]][["streets"]][["structure"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'tertiary'" = !is.null(themeOptions[["size"]][["streets"]][["tertiary"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'secondary'" = !is.null(themeOptions[["size"]][["streets"]][["secondary"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'primary'" = !is.null(themeOptions[["size"]][["streets"]][["primary"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'motorway'" = !is.null(themeOptions[["size"]][["streets"]][["motorway"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'rails'" = !is.null(themeOptions[["size"]][["streets"]][["rails"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain an entry named 'runway'" = !is.null(themeOptions[["size"]][["streets"]][["runway"]]))
+  stopifnot("the 'streets' list in the 'size' list in 'theme' should contain all numeric values" = all(sapply(themeOptions[["size"]][["streets"]], is.numeric)))
+}
 
